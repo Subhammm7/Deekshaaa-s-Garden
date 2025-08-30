@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Deekshaa's Garden 🌸</title>
+  <meta name="description" content="Minimalist Japanese birthday hub for Deekshaa — games, wishes, dreams, timer and notes.">
+
+  <!-- Cute & aesthetic fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Serif+JP:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#f6fff6; --lime:#a8e6cf; --teal:#7fcdcd; --ink:#254033;
+      --card: rgba(255,255,255,0.94); --muted:#6b7a6d; --accent:#f7c6d1;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,'Noto Sans',sans-serif;
+      background:
+        radial-gradient(600px 300px at 10% -10%, rgba(168,230,207,.08), transparent),
+        linear-gradient(135deg,#f3fff6 0%, #eefdfa 40%);
+      color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    .wrap{max-width:1150px;margin:18px auto;padding:18px;position:relative}
+    header{display:flex;gap:14px;align-items:center;padding:18px;border-radius:18px;background:var(--card);box-shadow:0 10px 32px rgba(0,0,0,.06);position:relative;overflow:hidden}
+    .enso{width:84px;height:84px;border:6px solid var(--teal);border-right-color:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--teal);font-family:'Dancing Script', cursive}
+    h1{font-family:'Noto Serif JP',serif;margin:0;font-size:1.6rem}
+    .subtitle{color:#3f6a55;font-size:0.95rem;opacity:.95}
+
+    .floating { animation: float 6s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-8px);} }
+
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:18px}
+    @media (max-width:960px){ .grid{grid-template-columns:repeat(6,1fr)} }
+    @media (max-width:640px){ .grid{grid-template-columns:repeat(1,1fr)} }
+
+    .card{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 8px 26px rgba(0,0,0,.06);transition:transform .18s}
+    .card:hover{transform:translateY(-4px)}
+    .col-6{grid-column:span 6} .col-8{grid-column:span 8} .col-4{grid-column:span 4} .col-12{grid-column:span 12}
+
+    .btn{background:var(--teal);border:0;padding:8px 12px;border-radius:999px;color:#053634;font-weight:700;cursor:pointer}
+    .btn-ghost{background:transparent;border:1px solid rgba(0,0,0,.06);padding:8px 10px;border-radius:999px;cursor:pointer}
+
+    .wish-title{font-family:'Dancing Script', cursive;font-size:1.4rem;margin-bottom:6px;color:#c45a7a}
+    .count{font-weight:700;font-size:1.6rem;color:var(--teal);margin-top:6px}
+    .small{font-size:13px;color:var(--muted)}
+
+    .special-card{display:flex;gap:12px;align-items:center}
+    .avatar{width:120px;height:120px;border-radius:14px;overflow:hidden;flex:0 0 120px;box-shadow:0 8px 20px rgba(0,0,0,.08)}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .card-content{flex:1;text-align:left}
+
+    .games-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    @media (max-width:720px){ .games-grid{grid-template-columns:repeat(1,1fr)} }
+    .game-box{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.9));padding:12px;border-radius:10px}
+
+    .memory-board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .card-tile{aspect-ratio:1/1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;background:var(--teal);color:white;user-select:none;transition:transform .18s, opacity .18s}
+    .card-tile.flipped{background:var(--lime);color:#143827;transform:scale(1.03)}
+    .card-tile.matched{background:#84caa9;box-shadow:inset 0 -6px 12px rgba(0,0,0,.06);cursor:default;opacity:.95}
+
+    .ttt{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:220px;margin:6px auto}
+    .ttt-cell{height:64px;border-radius:8px;background:#fff;border:2px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;transition:background .12s}
+
+    .pattern-row{display:flex;gap:10px;justify-content:center}
+    .pattern-btn{width:64px;height:64px;border-radius:12px;border:0;cursor:pointer;transform-origin:center;transition:transform .12s, box-shadow .12s}
+
+    .slide-grid{display:grid;grid-template-columns:repeat(3,80px);gap:8px;justify-content:center}
+    .tile-s{width:80px;height:80px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--lime);font-weight:700;cursor:pointer;transition:transform .12s}
+
+    .reaction-panel{height:120px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:linear-gradient(180deg,#f7fff1,#e3ffd8);border:2px dashed var(--teal);cursor:pointer;user-select:none}
+
+    .dreams-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+    .dream-item{padding:10px;border-radius:10px;background:rgba(0,0,0,.03);display:flex;justify-content:space-between;align-items:center}
+
+    .note-box{padding:12px;border-radius:12px;background:linear-gradient(180deg,#fff,#fff7fb);border:1px solid rgba(0,0,0,.04);font-family:'Dancing Script',cursive;color:#6b3}
+    .wellwish{padding:12px;border-radius:12px;background:linear-gradient(180deg,#fff,#fff8f1);border:1px solid rgba(0,0,0,.04);font-family:'Noto Serif JP',serif}
+
+    .muted{color:var(--muted);font-size:13px}
+    footer{margin-top:18px;text-align:center;color:#6b6b6b;font-size:13px}
+
+    .fade-in{animation:fadeIn .45s ease both}
+    @keyframes fadeIn{ from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+    /* modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);z-index:9999}
+    .modal-inner{background:var(--card);padding:18px;border-radius:12px;max-width:760px;width:94%;box-shadow:0 14px 48px rgba(0,0,0,.3);animation:pop .18s ease}
+    @keyframes pop{from{transform:scale(.98);opacity:0}to{transform:none;opacity:1}}
+
+    .suggestions{display:flex;flex-direction:column;gap:8px}
+    .suggestions a{color:var(--teal);text-decoration:none;font-weight:600}
+
+    /* Sticky Notes Styles */
+    .sticky-notes-container{
+      position:fixed;
+      pointer-events:none;
+      top:0;left:0;right:0;bottom:0;
+      z-index:1000;
+      overflow:hidden
+    }
+    .sticky-note{
+      position:absolute;
+      width:140px;
+      height:140px;
+      background:linear-gradient(135deg, #fff9c4 0%, #fff3a0 100%);
+      border-radius:2px;
+      box-shadow:0 4px 12px rgba(0,0,0,.15), 0 1px 3px rgba(0,0,0,.1);
+      padding:12px;
+      font-family:'Dancing Script', cursive;
+      font-size:14px;
+      color:#8b6914;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      transform:rotate(0deg);
+      opacity:0;
+      pointer-events:none;
+      animation:stickyFloat 8s ease-in-out infinite;
+    }
+    .sticky-note:nth-child(even){
+      background:linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      color:#8b4513;
+    }
+    .sticky-note:nth-child(3n){
+      background:linear-gradient(135deg, #fab1a0 0%, #e17055 100%);
+      color:#654321;
+    }
+    .sticky-note:nth-child(4n){
+      background:linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+      color:#7d3c5d;
+    }
+    .sticky-note:nth-child(5n){
+      background:linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+      color:#4c3a7d;
+    }
+    .sticky-note:nth-child(6n){
+      background:linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      color:#2d3e50;
+    }
+    
+    @keyframes stickyFloat {
+      0% { 
+        opacity:0; 
+        transform:translateX(var(--start-x)) translateY(100vh) rotate(var(--rotation));
+        filter:blur(2px);
+      }
+      15% { 
+        opacity:1; 
+        filter:blur(0px);
+      }
+      85% { 
+        opacity:1; 
+        filter:blur(0px);
+      }
+      100% { 
+        opacity:0; 
+        transform:translateX(var(--end-x)) translateY(-140px) rotate(calc(var(--rotation) + 180deg));
+        filter:blur(2px);
+      }
+    }
+
+    @media (max-width:768px) {
+      .sticky-note{
+        width:120px;
+        height:120px;
+        font-size:12px;
+        padding:10px;
+      }
+      .special-card{flex-direction:column;text-align:center}
+      .avatar{width:100px;height:100px}
+    }
+  </style>
+</head>
+<body>
+  <!-- Sticky Notes Container -->
+  <div class="sticky-notes-container" id="stickyContainer"></div>
+
+  <div class="wrap">
+    <header class="fade-in">
+      <div class="enso floating" aria-hidden>庭</div>
+      <div style="flex:1">
+        <h1>🌸 Deekshaa's Garden</h1>
+        <div class="subtitle">Minimalist Japanese • Lime breeze • Personal hub</div>
+        <div id="dailyWishText" class="muted" style="margin-top:6px"></div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <button id="helpBtn" class="btn">Need Help?</button>
+      </div>
+    </header>
+
+    <main class="grid" aria-live="polite">
+      <!-- Birthday & Avatar -->
+      <section class="card col-6 fade-in">
+        <div class="wish-title">🎂 Happy Birthday, Deekshaa</div>
+        <div class="special-card" style="margin-top:8px">
+          <div class="avatar" title="Deekshaa">
+            <!-- PLACEHOLDER IMAGE FILE:
+                 Replace "deeksha.jpg" with your uploaded picture filename (e.g. deeksha.jpg) in same folder.
+                 Example: <img src="deeksha.jpg" alt="Deekshaa"> -->
+            <img id="avatarImg" src="deeksha.jpg" alt="Deekshaa">
+          </div>
+          <div class="card-content">
+            <p class="muted">Like a quiet tea garden at dawn — calm, bright, and full of small wonders.</p>
+            <div class="count" id="countdown">Calculating...</div>
+            <div class="small" id="countnote"></div>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+              <button id="notifyToggle" class="btn">Enable Birthday Notifications</button>
+              <button id="playWish" class="btn-ghost">Play Wish</button>
+              <button id="secretBtn" class="btn-ghost" title="Secret message unlocker">Secret Message</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dreams + Date/Time -->
+      <section class="card col-6 fade-in">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:700">✨ Dreams & Motivation</div>
+            <div class="muted" id="liveDateTime"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <form id="dreamForm" onsubmit="return false" style="display:flex;gap:8px;">
+            <input id="dreamText" placeholder="Write a dream or affirmation..." style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,.06)">
+            <button class="btn" id="addDream">Add</button>
+          </form>
+
+          <ul id="dreamList" class="dreams-list" style="margin-top:12px"></ul>
+          <div style="margin-top:8px" class="muted">Saved only on this device. Keep dreams visible for motivation.</div>
+        </div>
+      </section>
+
+      <!-- Games -->
+      <section class="card col-8 fade-in">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700">🎮 Games & Brain Teasers</div>
+          <div class="muted">Scores & items saved locally</div>
+        </div>
+
+        <div class="games-grid" style="margin-top:12px">
+          <!-- Memory -->
+          <div class="game-box">
+            <div style="font-weight:700;margin-bottom:8px">🌺 Memory Garden</div>
+            <div id="memoryBoard" class="memory-board" aria-label="memory"></div>
+            <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+              <button class="btn" id="memReset">New Garden</button>
+              <div class="muted">Score: <span id="memScore">0</span></div>
+            </div>
+            <div class="muted" style="margin-top:8px;text-align:center">Match all pairs to unlock a surprise ✨</div>
+          </div>
+
+          <!-- Tic Tac Toe -->
+          <div class="game-box">
+            <div style="font-weight:700;margin-bottom:8px">♟️ Tic Tac Toe</div>
+            <div id="ttt" class="ttt"></div>
+            <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+              <button class="btn" id="tttReset">Reset</button>
+              <div class="muted">You: X • CPU: O</div>
+            </div>
+          </div>
+
+          <!-- Pattern Simon -->
+          <div class="game-box">
+            <div style="font-weight:700;margin-bottom:8px">🎨 Pattern Harmony (Simon)</div>
+            <div id="patternRow" class="pattern-row"></div>
+            <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+              <button class="btn" id="patternStart">Start</button>
+              <div class="muted">Level: <span id="patternLevel">0</span></div>
+            </div>
+          </div>
+
+          <!-- Sliding -->
+          <div class="game-box">
+            <div style="font-weight:700;margin-bottom:8px">🧩 Sliding Garden (3×3)</div>
+            <div id="slideGrid" class="slide-grid"></div>
+            <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+              <button class="btn" id="shuffleSlide">Shuffle</button>
+              <div class="muted">Moves: <span id="slideMoves">0</span></div>
+            </div>
+          </div>
+
+          <!-- Reaction -->
+          <div class="game-box">
+            <div style="font-weight:700;margin-bottom:8px">⚡ Reaction Zen</div>
+            <div id="reactionPanel" class="reaction-panel">Tap to begin</div>
+            <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+              <div class="muted">Last: <span id="reactionLast">–</span> ms • Best: <span id="reactionBest">–</span> ms</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- News Hub + Suggestions -->
+      <section class="card col-4 fade-in">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700">📰 News & Ideas</div>
+          <div class="muted">Open sources in new tab</div>
+        </div>
+
+        <div style="margin-top:12px">
+          <div style="display:flex;gap:8px" role="tablist">
+            <button id="tabIndia" class="btn-ghost">India</button>
+            <button id="tabWorld" class="btn-ghost">World</button>
+          </div>
+          <div id="newsList" style="margin-top:12px"></div>
+        </div>
+
+        <hr style="margin:12px 0;border:none;border-top:1px dashed rgba(0,0,0,.06)">
+        <div style="font-weight:700;margin-bottom:8px">Fun things to do together</div>
+        <div class="suggestions">
+          <div>• Synchronized watch: pick a YouTube or Netflix (use Teleparty) and press play together.</div>
+          <div>• Play the memory or tic-tac-toe together — compare high scores.</div>
+          <div>• Study Pomodoro together (start a timer and focus for 25 mins).</div>
+          <div>• Share a playlist and listen to music at the same time.</div>
+          <div>• Learn chess together — practice puzzles and watch matches.</div>
+          <a href="#" id="moreIdeas">More ideas →</a>
+        </div>
+      </section>
+
+      <!-- To-do & Calendar Notes -->
+      <section class="card col-4 fade-in">
+        <div style="font-weight:700">📝 To-Do</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input id="todoText" type="text" placeholder="New task" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,.06)"/>
+          <input id="todoDate" type="date" style="padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,.06)"/>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn" id="addTodo">Add</button>
+          <button class="btn-ghost" id="clearTodo">Clear Done</button>
+        </div>
+        <ul id="todoList" class="todo-list" style="margin-top:10px"></ul>
+      </section>
+
+      <section class="card col-8 fade-in">
+        <div style="font-weight:700">📆 Calendar Notes</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input id="noteDate" type="date" />
+          <input id="noteText" type="text" placeholder="Note for selected date" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,.06)"/>
+          <button class="btn" id="saveNote">Save</button>
+        </div>
+        <div style="margin-top:8px" class="small muted">Saved to device only</div>
+      </section>
+
+      <!-- Well-wisher note card -->
+      <section class="card col-12 fade-in">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="flex:1">
+            <div class="wish-title" style="margin-bottom:6px">A note from a close friend</div>
+            <div class="wellwish">
+              <strong>Happy Birthday Deekshuu! 🥳❤</strong>
+              <p style="margin:6px 0">
+                You forgive so easily — that's one of the best things about you. Even though our friendship started online, your care, efforts and the way you fix things make everything feel real.
+              </p>
+              <p style="margin:6px 0">
+                I'm kinda immature sometimes (besides studying 👽) — but you always help, calm fights, and care so much. If I ever said or did anything rude, please forgive me. Tell me honestly — you're my close friend and I'll always listen.
+              </p>
+              <p style="margin:6px 0">
+                Now you're officially an adult — make good friends, keep family first, and look after your health (don't skip meals!). Focus on studies and follow what interests you — I dream of seeing you play big chess tournaments someday. Who knows — maybe GM one day and dont forget mujhe japan bhi leke jaana hai!! 🫢🔥
+              </p>
+              <p style="margin:6px 0">Enjoy your day! I love youuu 🫂❤</p>
+            </div>
+          </div>
+          <div style="width:220px">
+            <div class="note-box">Cute reminders:
+              <ul style="margin:8px 0 0 16px">
+                <li>Eat well 🍱</li>
+                <li>Sleep enough 💤</li>
+                <li>Practice chess ♟️</li>
+                <li>Make good friends 😊</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="fade-in">Made with ❤ for Deekshaa — Subham · contact: <a href="mailto:subhamm045@gmail.com">subhamm045@gmail.com</a></footer>
+  </div>
+
+  <!-- Secret message modal -->
+  <div id="secretModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-inner">
+      <button id="closeSecret" style="float:right;border:0;background:transparent;font-size:18px;cursor:pointer">✕</button>
+      <h3 style="font-family:'Dancing Script',cursive;margin-top:6px">Surprise 🎁</h3>
+      <div id="secretContent" style="margin-top:8px">
+        <!-- content filled by JS -->
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+        <button id="closeSecret2" class="btn-ghost">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio elements -->
+  <audio id="wishAudio" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_2b08e7e4f4.mp3?filename=japanese-meditation-110135.mp3"></audio>
+  <audio id="surpriseAudio" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1b5b1d0a7f.mp3?filename=happy_chime_002.mp3"></audio>
+
+<script>
+/* ================= Utilities / localStorage keys ================= */
+const LS = {
+  todos: 'dg_todos_v2',
+  notes: 'dg_notes_v2',
+  dreams: 'dg_dreams_v1',
+  memScore: 'dg_memscore_v1',
+  dailyNotified: 'dg_daily_notified_v1'
+};
+const $ = id => document.getElementById(id);
+function save(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+function load(k, fallback){ try{ const v = JSON.parse(localStorage.getItem(k)); return v==null? fallback: v; }catch(e){ return fallback } }
+
+/* ========== Sticky Notes Animation ========== */
+const stickyMessages = [
+  "Don't skip meals! 🍱",
+  "Take short walks 🌿",
+  "Drink water regularly 💧",
+  "Practice chess ♟️ daily",
+  "Smile and breathe 🌞",
+  "You are amazing, Deekshaa! 💖",
+  "Keep dreams alive ✨"
+];
+
+function createStickyNote() {
+  const note = document.createElement('div');
+  note.className = 'sticky-note';
+  note.textContent = stickyMessages[Math.floor(Math.random() * stickyMessages.length)];
+  
+  // Random positioning and rotation
+  const startX = Math.random() * window.innerWidth;
+  const endX = startX + (Math.random() - 0.5) * 200;
+  const rotation = (Math.random() - 0.5) * 30;
+  
+  note.style.setProperty('--start-x', startX + 'px');
+  note.style.setProperty('--end-x', endX + 'px');
+  note.style.setProperty('--rotation', rotation + 'deg');
+  note.style.animationDelay = Math.random() * 2 + 's';
+  note.style.animationDuration = (6 + Math.random() * 4) + 's';
+  
+  document.getElementById('stickyContainer').appendChild(note);
+  
+  // Remove after animation
+  setTimeout(() => {
+    if (note.parentNode) {
+      note.parentNode.removeChild(note);
+    }
+  }, 10000);
+}
+
+// Create sticky notes periodically
+setInterval(createStickyNote, 3000);
+// Create initial notes
+setTimeout(() => createStickyNote(), 1000);
+setTimeout(() => createStickyNote(), 2000);
+
+/* ========== 1) Birthday countdown, daily wish notifications ========== */
+const B_DAY_MONTH = 8, B_DAY_DATE = 30; // 30 Aug
+function nextBirthdayDate(now=new Date()){
+  const y = now.getFullYear();
+  let cand = new Date(y, B_DAY_MONTH -1, B_DAY_DATE, 0,0,0);
+  if (cand <= now) cand = new Date(y+1, B_DAY_MONTH -1, B_DAY_DATE, 0,0,0);
+  return cand;
+}
+function updateCountdown(){
+  const now = new Date();
+  const target = nextBirthdayDate(now);
+  const diff = target - now;
+  if (diff <= 0){
+    $('countdown').textContent = "🎉 It's Birthday! Happy Birthday Deekshaa! 🎉";
+    notify('🎉 Happy Birthday Deekshaa!', 'Wishing you a wonderful day 🌸');
+    return;
+  }
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  $('countdown').textContent = `${d}d ${h}h ${m}m ${s}s`;
+  $('countnote').textContent = `Next birthday: ${nextBirthdayDate().toDateString()}`;
+  // if within 10 days -> single notification
+  if (d <= 10 && !localStorage.getItem('dg_notified_10d')) {
+    notify(`Only ${d} days left!`, `Deekshaa's birthday is on ${nextBirthdayDate().toDateString()} 🌸`);
+    localStorage.setItem('dg_notified_10d', '1');
+  }
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Notifications
+function notify(title, text){
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'granted') {
+    try { new Notification(title, { body: text }); } catch(e){ console.warn(e) }
+  } else if (Notification.permission !== 'denied') {
+    Notification.requestPermission().then(p => { if (p==='granted') new Notification(title, { body:text }); });
+  }
+}
+$('notifyToggle').addEventListener('click', ()=>{
+  if (Notification.permission === 'granted') alert('Notifications already enabled!');
+  else Notification.requestPermission().then(p => alert(p==='granted' ? 'Notifications enabled!' : 'Notifications denied.'));
+});
+$('playWish').addEventListener('click', ()=> { try{ $('wishAudio').currentTime=0; $('wishAudio').play(); }catch(e){ }});
+
+/* daily rotating wish */
+const DAILY_WISHES = [
+  "🌸 Good morning Deekshaa — may today be gentle and bright.",
+  "✨ Keep going — small steps lead to beautiful places.",
+  "🌞 Shine on — you're doing great!",
+  "🍀 Luck & love to you today.",
+  "💖 Thank you for the love and care — even across online friendships."
+];
+function showDailyWish(){
+  const day = new Date().getDate();
+  const wish = DAILY_WISHES[day % DAILY_WISHES.length];
+  $('dailyWishText').textContent = wish;
+  const last = localStorage.getItem(LS.dailyNotified);
+  const todayKey = new Date().toISOString().slice(0,10);
+  if (Notification && Notification.permission === 'granted' && last !== todayKey) {
+    try { new Notification('Daily wish for Deekshaa 🌸', { body: wish }); } catch(e){ }
+    localStorage.setItem(LS.dailyNotified, todayKey);
+  }
+}
+showDailyWish();
+
+/* ========== 2) Live Date & Time (for Dreams section) ========== */
+function updateLiveDateTime(){
+  const now = new Date();
+  $('liveDateTime').textContent = now.toLocaleString();
+}
+setInterval(updateLiveDateTime, 1000);
+updateLiveDateTime();
+
+/* ========== 3) News Hub (static) ========== */
+const India = [
+  {name:'NDTV', url:'https://www.ndtv.com/'},
+  {name:'Times of India', url:'https://timesofindia.indiatimes.com/'},
+  {name:'The Hindu', url:'https://www.thehindu.com/'},
+  {name:'Indian Express', url:'https://indianexpress.com/'},
+  {name:'Hindustan Times', url:'https://www.hindustantimes.com/'},
+  {name:'News18', url:'https://www.news18.com/'}
+];
+const World = [
+  {name:'BBC', url:'https://www.bbc.com/'},
+  {name:'CNN', url:'https://www.cnn.com/'},
+  {name:'Reuters', url:'https://www.reuters.com/'},
+  {name:'Al Jazeera', url:'https://www.aljazeera.com/'},
+  {name:'The Guardian', url:'https://www.theguardian.com/international'},
+  {name:'AP News', url:'https://apnews.com/'}
+];
+function renderNews(list){
+  const box = document.createElement('div');
+  list.forEach(s=>{
+    const a = document.createElement('a');
+    a.href = s.url; a.target='_blank'; a.rel='noopener';
+    a.textContent = s.name; a.style.display='block'; a.style.padding='6px 0'; a.style.color='#0b5';
+    box.appendChild(a);
+  });
+  const container = $('newsList'); container.innerHTML=''; container.appendChild(box);
+}
+$('tabIndia').addEventListener('click', ()=> renderNews(India));
+$('tabWorld').addEventListener('click', ()=> renderNews(World));
+renderNews(India);
+
+/* ========== 4) Dreams (motivations) ========== */
+function renderDreams(){
+  const list = load(LS.dreams, []);
+  const ul = $('dreamList'); ul.innerHTML = '';
+  list.forEach((d, idx)=>{
+    const li = document.createElement('li'); li.className='dream-item';
+    const left = document.createElement('div'); left.textContent = d.text;
+    const right = document.createElement('div');
+    const del = document.createElement('button'); del.textContent='✕'; del.style.border='0'; del.style.background='transparent'; del.style.cursor='pointer';
+    del.addEventListener('click', ()=> { list.splice(idx,1); save(LS.dreams, list); renderDreams(); });
+    right.appendChild(del);
+    li.appendChild(left); li.appendChild(right);
+    ul.appendChild(li);
+  });
+}
+$('addDream').addEventListener('click', ()=> {
+  const text = $('dreamText').value.trim();
+  if (!text) return alert('Write your dream or motivation!');
+  const list = load(LS.dreams, []);
+  list.unshift({ text, created: Date.now() });
+  save(LS.dreams, list);
+  $('dreamText').value='';
+  renderDreams();
+});
+renderDreams();
+
+/* ========== 5) Games implementations ========== */
+
+/* ---- Memory ---- */
+const memSymbols = ['🌸','🌺','🌻','🌷','🌹','🏵️','🌼','🌱'];
+let memBoard=[], memFlipped=[], memMatched=0, memScore=load(LS.memScore,0);
+function initMemory(){
+  const board = $('memoryBoard'); board.innerHTML='';
+  const arr = [...memSymbols, ...memSymbols].sort(()=>Math.random()-0.5);
+  memBoard = arr; memFlipped = []; memMatched = 0;
+  arr.forEach((sym,i)=>{
+    const d = document.createElement('div'); d.className='card-tile'; d.dataset.i=i; d.textContent='';
+    d.addEventListener('click', ()=> memFlip(i));
+    board.appendChild(d);
+  });
+  $('memScore').textContent = memScore;
+}
+function memFlip(i){
+  const tiles = document.querySelectorAll('#memoryBoard .card-tile');
+  const el = tiles[i];
+  if (el.classList.contains('flipped') || el.classList.contains('matched')) return;
+  el.classList.add('flipped'); el.textContent = memBoard[i];
+  memFlipped.push(i);
+  if (memFlipped.length === 2){
+    setTimeout(()=> {
+      const [a,b] = memFlipped;
+      const t1 = tiles[a], t2 = tiles[b];
+      if (memBoard[a] === memBoard[b]){
+        t1.classList.add('matched'); t2.classList.add('matched'); memMatched++; memScore += 10; save(LS.memScore, memScore);
+        // if all matched -> reveal secret
+        if (memMatched === memSymbols.length) revealSecret('You matched all the garden pairs! Here\'s a little surprise for you ✨');
+      } else {
+        t1.classList.remove('flipped'); t1.textContent=''; t2.classList.remove('flipped'); t2.textContent='';
+      }
+      memFlipped = [];
+      $('memScore').textContent = memScore;
+    }, 650);
+  }
+}
+$('memReset').addEventListener('click', ()=> initMemory());
+
+/* ---- Tic Tac Toe (simple CPU random) ---- */
+let tttBoard = Array(9).fill('');
+function renderTTT(){
+  const el = $('ttt'); el.innerHTML='';
+  tttBoard.forEach((v,i)=>{
+    const c = document.createElement('div'); c.className='ttt-cell'; c.dataset.i=i; c.textContent=v;
+    c.addEventListener('click', ()=> tttMove(i));
+    el.appendChild(c);
+  });
+}
+function tttMove(i){
+  if (tttBoard[i]) return;
+  tttBoard[i] = 'X';
+  if (checkTTT('X')){ setTimeout(()=> alert('You win! 🎉'), 80); renderTTT(); return; }
+  if (tttBoard.every(Boolean)){ setTimeout(()=> alert('Draw!'), 80); renderTTT(); return; }
+  const empties = tttBoard.map((v,idx)=>v?null:idx).filter(n=>n!==null);
+  const pick = empties[Math.floor(Math.random()*empties.length)];
+  tttBoard[pick] = 'O';
+  if (checkTTT('O')){ setTimeout(()=> alert('CPU wins!'), 80); }
+  renderTTT();
+}
+function checkTTT(p){
+  const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  return wins.some(w => w.every(i => tttBoard[i] === p));
+}
+$('tttReset').addEventListener('click', ()=> { tttBoard = Array(9).fill(''); renderTTT(); });
+
+/* ---- Pattern (Simon) ---- */
+const patternBtns = [{color:'#ff7f7f'},{color:'#7fffb0'},{color:'#7fd9ff'},{color:'#ffed7f'}];
+let patternSeq = [], playerSeq = [], patternLevel = 0, showingPattern=false;
+function createPatternUI(){
+  const row = $('patternRow'); row.innerHTML='';
+  patternBtns.forEach((b,idx)=>{
+    const btn = document.createElement('button'); btn.className='pattern-btn'; btn.style.background=b.color;
+    btn.addEventListener('click', ()=> playerPattern(idx));
+    row.appendChild(btn);
+  });
+}
+function playerPattern(i){
+  if (showingPattern) return;
+  playerSeq.push(i);
+  for (let k=0;k<playerSeq.length;k++){
+    if (playerSeq[k] !== patternSeq[k]){ alert('Wrong pattern — try again'); resetPattern(); return; }
+  }
+  if (playerSeq.length === patternSeq.length){
+    patternLevel++; $('patternLevel').textContent = patternLevel; setTimeout(nextPatternStep, 600);
+  }
+}
+function nextPatternStep(){ playerSeq=[]; patternSeq.push(Math.floor(Math.random()*patternBtns.length)); showPattern(); }
+function showPattern(){
+  showingPattern = true;
+  const btns = document.querySelectorAll('.pattern-btn');
+  let i = 0;
+  const it = setInterval(()=> {
+    btns.forEach(b => b.style.transform = '');
+    if (i > 0) btns[patternSeq[i-1]].style.transform = '';
+    if (i < patternSeq.length){
+      const el = btns[patternSeq[i]];
+      el.style.transform = 'scale(1.12)';
+      i++;
+    } else {
+      clearInterval(it);
+      setTimeout(()=> { btns.forEach(b=> b.style.transform=''); showingPattern=false; }, 350);
+    }
+  }, 550);
+}
+function resetPattern(){ patternSeq = []; playerSeq = []; patternLevel = 0; $('patternLevel').textContent = 0; }
+$('patternStart').addEventListener('click', ()=> { resetPattern(); nextPatternStep(); });
+
+/* ---- Sliding 3x3 ---- */
+let slideTiles = []; let slideMoves = 0;
+function drawSlide(){
+  const grid = $('slideGrid'); grid.innerHTML='';
+  slideTiles.forEach((n,i)=>{
+    const d = document.createElement('div'); d.className='tile-s'; d.textContent = n===0? '' : n;
+    if (n===0) d.style.background='transparent';
+    d.addEventListener('click', ()=> moveTile(i));
+    grid.appendChild(d);
+  });
+  $('slideMoves').textContent = slideMoves;
+}
+function shuffleSlide(){
+  do {
+    const arr = [1,2,3,4,5,6,7,8,0].sort(()=>Math.random()-0.5);
+    slideTiles = arr;
+  } while(!isSolvable(slideTiles));
+  slideMoves = 0; drawSlide();
+}
+function isSolvable(arr){ let inv=0; for(let i=0;i<9;i++) for(let j=i+1;j<9;j++) if(arr[i] && arr[j] && arr[i]>arr[j]) inv++; return inv%2===0; }
+function moveTile(i){
+  const empty = slideTiles.indexOf(0);
+  const r1=Math.floor(i/3), c1=i%3, r2=Math.floor(empty/3), c2=empty%3;
+  if (Math.abs(r1-r2)+Math.abs(c1-c2)===1){
+    [slideTiles[i], slideTiles[empty]] = [slideTiles[empty], slideTiles[i]];
+    slideMoves++; drawSlide();
+    if (isSolved()) setTimeout(()=> revealSecret('You solved the sliding garden! Here\'s a tiny surprise 🌿'), 120);
+  }
+}
+function isSolved(){ return slideTiles.slice(0,8).every((n,i)=>n===i+1) && slideTiles[8]===0; }
+$('shuffleSlide').addEventListener('click', shuffleSlide);
+
+/* ---- Reaction Test ---- */
+let reactState='idle', reactStart=0, best=null, timeoutId=null;
+const panel = $('reactionPanel');
+panel.addEventListener('click', ()=>{
+  if (reactState==='idle'){
+    panel.textContent = 'Wait for green…'; panel.style.background = 'linear-gradient(180deg,#fff6f6,#ffe0e0)';
+    reactState='waiting';
+    timeoutId = setTimeout(()=>{ panel.textContent='Tap!'; panel.style.background='linear-gradient(180deg,#f1fff1,#d6ffd6)'; reactStart=performance.now(); reactState='go'; }, 700 + Math.random()*1200);
+  } else if (reactState==='waiting'){
+    clearTimeout(timeoutId); panel.textContent = 'Too soon! Tap to try again'; panel.style.background='linear-gradient(180deg,#fff6f6,#ffe0e0)'; reactState='idle';
+  } else if (reactState==='go'){
+    const t = Math.round(performance.now()-reactStart); $('reactionLast').textContent = t; if(best===null || t<best){ best=t; $('reactionBest').textContent = best; } panel.textContent='Tap to begin'; panel.style.background='linear-gradient(180deg,#f7fff1,#e3ffd8)'; reactState='idle';
+  }
+});
+
+/* ========== 6) To-do & Calendar Notes (local only) ========== */
+function renderTodos(){
+  const list = load(LS.todos, []);
+  const ul = $('todoList'); ul.innerHTML = '';
+  list.forEach((t,i)=>{
+    const li = document.createElement('li'); li.className='todo-item';
+    li.innerHTML = `<div><strong>${escapeHtml(t.text)}</strong><div class="muted">${t.date|| ''}</div></div>
+      <div><button class="btn-ghost" data-i="${i}" data-action="done">Done</button></div>`;
+    ul.appendChild(li);
+  });
+}
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+$('addTodo').addEventListener('click', ()=>{
+  const text = $('todoText').value.trim(), date = $('todoDate').value;
+  if (!text) return alert('Enter a task');
+  const list = load(LS.todos, []);
+  list.unshift({ text, date, created: Date.now() });
+  save(LS.todos, list);
+  $('todoText').value=''; $('todoDate').value=''; renderTodos();
+});
+$('todoList').addEventListener('click', (e)=> {
+  const btn = e.target.closest('button'); if (!btn) return;
+  const idx = Number(btn.dataset.i); const action = btn.dataset.action;
+  if (action==='done'){ const list = load(LS.todos, []); list.splice(idx,1); save(LS.todos, list); renderTodos(); }
+});
+$('clearTodo').addEventListener('click', ()=> {
+  const list = load(LS.todos, []);
+  if (!list.length) return alert('No tasks'); if (!confirm('Clear all tasks?')) return;
+  save(LS.todos, []); renderTodos();
+});
+$('saveNote').addEventListener('click', ()=> {
+  const date = $('noteDate').value; if (!date) return alert('Pick a date');
+  const text = $('noteText').value.trim(); const notes = load(LS.notes, {});
+  if (!text) delete notes[date]; else notes[date]=text;
+  save(LS.notes, notes); alert('Saved');
+});
+
+/* ========== 7) Help: WhatsApp + Gmail (use your email) ========== */
+const yourNumber = '917894094184'; // change if needed
+$('helpBtn').addEventListener('click', ()=> {
+  const url = `https://wa.me/${yourNumber}?text=${encodeURIComponent('uhm, I need...')}`;
+  window.open(url, '_blank');
+  const mail = 'subhamm045@gmail.com';
+  if (confirm('Open your email client to contact?')) {
+    window.open(`mailto:${mail}?subject=Help%20from%20Deekshaa%27s%20Garden&body=Hi%20Subham,%0A%0AI%20need...`, '_blank');
+  }
+});
+
+/* ========== 8) Secret message unlocker & modal ========== */
+function revealSecret(extra='') {
+  // Fill the secret modal with the heartfelt message and play surprise audio
+  const content = document.getElementById('secretContent');
+  content.innerHTML = `
+    <div style="font-family:'Noto Serif JP',serif">
+      <p style="font-size:1.05rem;margin:8px 0 6px 0">Happy Birthday, Deekshaa! 🥳❤</p>
+      <p>Thank you for being kind, patient, and caring — even across online friendship. You always make effort, soothe fights, and bring warmth. If I ever hurt you, I'm sorry — tell me honestly and I'll fix it as your close friend.</p>
+      <p>You're an adult now — make wise friends, keep family first, and look after your health. Don't skip meals, sleep well, and follow what you love (like chess!). I hope to see you in big tournaments — maybe GM one day and dont forget mujhe japan bhi leke jaana hai!!</p>
+      <p style="margin-top:8px"><strong>Enjoy your day — I love you! 🫂❤</strong></p>
+      <p style="margin-top:6px;color:var(--muted)">${extra}</p>
+    </div>
+  `;
+  // show modal
+  $('secretModal').style.display = 'flex';
+  $('secretModal').setAttribute('aria-hidden','false');
+  try { $('surpriseAudio').currentTime = 0; $('surpriseAudio').play(); } catch(e){ }
+}
+$('closeSecret').addEventListener('click', ()=> { $('secretModal').style.display='none'; $('secretModal').setAttribute('aria-hidden','true'); });
+$('closeSecret2').addEventListener('click', ()=> { $('secretModal').style.display='none'; $('secretModal').setAttribute('aria-hidden','true'); });
+// Secret button offers either passphrase or check memory solved
+$('secretBtn').addEventListener('click', ()=> {
+  const pass = prompt('Enter passphrase to unlock (hint: friend) or type SOLVE to check memory/slide.');
+  if (!pass) return;
+  if (pass.toLowerCase()==='friend' || pass.toLowerCase()==='friendship') {
+    revealSecret('Unlocked with passphrase — you are loved 💖');
+  } else if (pass.toUpperCase()==='SOLVE') {
+    if (memMatched === memSymbols.length) revealSecret('Unlocked: you matched all memory pairs — surprise unlocked!');
+    else if (isSolved()) revealSecret('Unlocked: you solved the sliding puzzle — surprise unlocked!');
+    else alert('Not solved yet — try matching all memory cards or solving the sliding puzzle.');
+  } else {
+    alert('Wrong passphrase — try again or solve the games to unlock!');
+  }
+});
+
+/* ========== 9) Initialization (init all parts) ========== */
+function initAll(){
+  initMemory(); renderTTT(); createPatternUI(); shuffleSlide();
+  renderTodos(); renderDreams();
+  // set today's note date & load notes
+  const today = new Date().toISOString().slice(0,10);
+  $('noteDate').value = today;
+  const notes = load(LS.notes, {}); $('noteText').value = notes[today] || '';
+  // gentle prompt for notifications
+  setTimeout(()=> {
+    if ('Notification' in window && Notification.permission === 'default') {
+      if (confirm('Allow browser notifications for daily wishes and birthday reminders?')) {
+        Notification.requestPermission();
+      }
+    }
+  }, 1500);
+}
+initAll();
+
+/* More-ideas link */
+$('moreIdeas').addEventListener('click', (e)=> {
+  e.preventDefault();
+  alert('More ideas: synchronous study sessions (Pomodoro), co-watch via Teleparty/SyncTube, collaborative playlist, online chess coaching, shared drawing board, voice hangouts while playing games.');
+});
+</script>
+</body>
+</html>
